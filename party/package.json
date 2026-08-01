@@ -1,0 +1,12 @@
+{
+  "name": "ios17-chatroom-party",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "partykit dev",
+    "deploy": "partykit deploy"
+  },
+  "dependencies": {
+    "partykit": "^0.0.116"
+  }
+}
