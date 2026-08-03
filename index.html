@@ -572,9 +572,18 @@ window.onbeforeunload = function(){
 const WS_ENDPOINT = "wss://chatroom-worker.liul36198.workers.dev/ws";
 
 function initWs(){
+ console.log("[WS] initWs called, endpoint:", WS_ENDPOINT);
  if(ws) try{ws.close()}catch(e){}
+ try{
  ws = new WebSocket(WS_ENDPOINT);
+ console.log("[WS] WebSocket object created");
+ }catch(e){
+ console.error("[WS] 创建失败:", e);
+ setTimeout(initWs, 3000);
+ return;
+ }
  ws.onopen = ()=>{
+ console.log("[WS] ✅ connected");
  isOnline=true; updateStatus(true);
  wsSend({t:"join",u:username});
  startHeartbeat();
@@ -582,12 +591,20 @@ function initWs(){
  ws.onmessage = e=>{
  try{
  const d = JSON.parse(e.data);
- if(d.u===username && d._s) return; // 过滤自己
+ console.log("[WS] recv:", d.t, d.u||"");
+ if(d.u===username && d._s) return;
  handleWs(d);
  }catch(err){}
  };
- ws.onclose = ()=>{ isOnline=false; updateStatus(false); clearTyping(); stopHeartbeat(); onlineUsers={}; renderOnline(); reconn=setTimeout(()=>initWs(),3000); };
- ws.onerror = ()=>ws.close();
+ ws.onclose = e=>{
+ console.log("[WS] closed, code:", e?.code, "reason:", e?.reason);
+ isOnline=false; updateStatus(false); clearTyping(); stopHeartbeat(); onlineUsers={}; renderOnline();
+ reconn=setTimeout(()=>initWs(),3000);
+ };
+ ws.onerror = e=>{
+ console.error("[WS] error:", e?.message || e);
+ if(ws) ws.close();
+ };
 }
 
 function wsSend(d){ if(isOnline && ws.readyState===1) ws.send(JSON.stringify(d)); }
