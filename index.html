@@ -903,7 +903,7 @@ function saveDraft(){ localStorage.setItem("draft",$("chat-input").value); }
 function clearDraft(){ localStorage.removeItem("draft"); }
 function restoreDraft(){ const d=localStorage.getItem("draft"); if(d) $("chat-input").value=d; }
 function esc(s){ if(!s)return""; const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
-const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function rand(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
 const t2 = () => new Date().toLocaleString();
 
 function updateUnread(){ const b=$("unreadBadge"); if(unread>0){b.textContent=unread>99?"99+":unread;b.style.display="inline-flex";} else{b.style.display="none";} }
