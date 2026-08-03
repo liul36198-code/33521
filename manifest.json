@@ -1,9 +1,9 @@
 {
   "name": "iOS17 沉浸式聊天室",
   "short_name": "聊天室",
-  "description": "多人实时 WebSocket 聊天室，支持群聊/私聊/图片/表情/视频通话，PWA 可安装至桌面",
-  "start_url": "./",
-  "scope": "./",
+  "description": "微信式聊天 - 私聊/群聊/撤回/背景设置，PWA 可安装至桌面",
+  "start_url": "/33521/index.html",
+  "scope": "/33521/",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#2c2444",
@@ -16,39 +16,16 @@
   ],
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%238b5cf6'/><text x='96' y='128' font-size='110' text-anchor='middle' fill='white'>💬</text></svg>",
+      "src": "/33521/icon-192.png",
       "sizes": "192x192",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%238b5cf6'/><text x='256' y='350' font-size='280' text-anchor='middle' fill='white'>💬</text></svg>",
+      "src": "/33521/icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
-    }
-  ],
-  "share_target": {
-    "action": "./",
-    "method": "GET",
-    "params": {
-      "title": "title",
-      "text": "text",
-      "url": "url"
-    }
-  },
-  "shortcuts": [
-    {
-      "name": "💬 进入聊天",
-      "short_name": "聊天",
-      "description": "打开聊天室",
-      "url": "./",
-      "icons": [
-        {
-          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' rx='20' fill='%238b5cf6'/><text x='48' y='68' font-size='50' text-anchor='middle' fill='white'>💬</text></svg>",
-          "sizes": "96x96"
-        }
-      ]
     }
   ]
 }
