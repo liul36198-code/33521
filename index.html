@@ -542,7 +542,7 @@ window.onload = function(){
  renderAll();
  initWs();
  initEmoji();
- initParticle();
+ window.addEventListener("load", initParticle);
  restoreDraft();
  initPWA();
 
@@ -1165,13 +1165,18 @@ function dismissPWA(){$("pwaBanner").classList.remove("show");}
 // ═══════════════════════════════════════════════════
 //  爱心粒子
 // ═══════════════════════════════════════════════════
-const pc=$("particleCanvas"), px=pc.getContext("2d");
-let pW,pH,pts=[];
-(function rw(){pW=pc.width=innerWidth;pH=pc.height=innerHeight;})();
-addEventListener("resize",rw);
+let pc, px, pW, pH, pts=[];
+function rw(){ if(!pc) return; pW=pc.width=innerWidth; pH=pc.height=innerHeight; }
+function initParticle(){
+ pc=$("particleCanvas"); if(!pc) return;
+ px=pc.getContext("2d");
+ rw();
+ addEventListener("resize",rw);
+ pts=Array.from({length:80},()=>new Pt());
+ (function lp(){if(!px)return; px.clearRect(0,0,pW,pH);pts.forEach(p=>{p.u();p.d();});if(pts[0]?.a>0)requestAnimationFrame(lp);else if(pc) pc.style.display="none";})();
+}
 class Pt{constructor(){this.x=Math.random()*pW;this.y=Math.random()*pH;this.sz=Math.random()*8+3;this.sx=(pW/2-this.x)*.018;this.sy=(pH/2-this.y)*.018;this.a=1;}u(){this.x+=this.sx;this.y+=this.sy;this.a-=.012;}d(){px.save();px.globalAlpha=this.a;px.fillStyle="#ff88cc";px.beginPath();px.moveTo(this.x,this.y);px.bezierCurveTo(this.x-this.sz,this.y-this.sz/2,this.x-this.sz,this.y-this.sz,this.x,this.y-this.sz);px.bezierCurveTo(this.x+this.sz,this.y-this.sz,this.x+this.sz,this.y-this.sz/2,this.x,this.y);px.fill();px.restore();}}
-function initParticle(){pts=Array.from({length:80},()=>new Pt());(function lp(){px.clearRect(0,0,pW,pH);pts.forEach(p=>{p.u();p.d();});if(pts[0]?.a>0)requestAnimationFrame(lp);else pc.style.display="none";})();}
-initParticle();
+window.addEventListener("load", initParticle);
 </script>
 </body>
 </html>
