@@ -965,15 +965,18 @@ function initWs(){
   return;
  }
  ws.onopen = () => {
+  console.log("[WS] connected!");
   isOnline = true;
+  updateStatus(true);
   wsSend({t:"join", u:username, room:currentRoom});
   startHeartbeat();
  };
  ws.onmessage = e => {
   try{
    const d = JSON.parse(e.data);
+   console.log("[WS] recv:", d.type || d.t, d.room || "");
    handleWs(d);
-  }catch(err){}
+  }catch(err){ console.error("[WS] parse error:", err.message); }
  };
  ws.onclose = () => {
   isOnline = false;
@@ -981,7 +984,7 @@ function initWs(){
   stopHeartbeat();
   reconn = setTimeout(() => initWs(), 3000);
  };
- ws.onerror = () => { if(ws) ws.close(); };
+ ws.onerror = (e) => { console.error("[WS] error:", e); isOnline=false; updateStatus(false); if(ws) ws.close(); };
 }
 
 function wsSend(d){ if(isOnline && ws.readyState===1) ws.send(JSON.stringify(d)); }
