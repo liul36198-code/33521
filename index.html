@@ -532,8 +532,8 @@ window.onbeforeunload = function(){
 //  WebSocket
 // ═══════════════════════════════════════════════════
 // ═══ WebSocket 服务器配置 ═══
-// 部署后替换为你的 PartyKit 地址，如：wss://ios17-chatroom.yourname.partykit.dev
-const WS_ENDPOINT = "wss://ios17-chatroom.$PARTYKIT_USER.partykit.dev";
+// Cloudflare Worker WebSocket 地址（已部署）
+const WS_ENDPOINT = "wss://chatroom-worker.liul36198.workers.dev/ws";
 
 function initWs(){
  if(ws) try{ws.close()}catch(e){}
