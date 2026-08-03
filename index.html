@@ -38,6 +38,7 @@ body{
  display:flex;align-items:center;justify-content:space-between;z-index:80;
  background:var(--card-bg);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
  border-bottom:1px solid var(--card-border);color:var(--text);
+ padding-top:env(safe-area-inset-top);
 }
 .dot{width:8px;height:8px;border-radius:50%;background:var(--success);margin-right:6px;box-shadow:0 0 6px var(--success);flex-shrink:0}
 .dot.offline{background:var(--danger);box-shadow:0 0 6px var(--danger)}
@@ -67,6 +68,7 @@ body{
 .main-area{
  flex:1;height:100vh;padding:60px 14px 14px;display:flex;flex-direction:column;
  color:var(--text);overflow:hidden;
+ padding-top:calc(48px + env(safe-area-inset-top));
 }
 
 /* 卡片 */
@@ -112,12 +114,29 @@ body{
 .msg-file-name{font-size:12px;word-break:break-all}
 
 /* 输入栏 */
-.input-row{display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.input-row{display:flex;gap:6px;align-items:flex-end;flex-shrink:0;padding:8px;background:var(--card-bg);border-radius:18px;margin-bottom:8px}
 #chat-input{
- flex:1;border-radius:24px;border:none;outline:none;padding:11px 18px;font-size:14px;
+ flex:1;border-radius:22px;border:none;outline:none;padding:10px 14px;font-size:14px;
  background:rgba(255,255,255,.25);backdrop-filter:blur(20px);color:var(--text);resize:none;
- max-height:120px;line-height:1.5;
+ max-height:100px;line-height:1.4;min-height:38px;font-family:inherit;
 }
+.tool-btn{padding:0;width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;font-size:20px;border-radius:50%;background:rgba(255,255,255,.12);flex-shrink:0;border:none;color:var(--text);cursor:pointer;transition:transform .15s}
+.tool-btn:active{transform:scale(.9)}
+.tool-btn.primary{background:var(--primary);color:#fff;box-shadow:0 4px 12px rgba(139,92,246,.4)}
+.plus-panel{display:none;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px 10px;background:var(--card-bg);backdrop-filter:blur(30px);border-radius:18px;margin-bottom:8px;animation:slideUp .25s ease}
+.plus-panel.show{display:grid}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.plus-item{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 4px;border-radius:14px;background:rgba(255,255,255,.08);cursor:pointer;border:none;color:var(--text);font-size:11px;transition:transform .15s;font-family:inherit}
+.plus-item:active{transform:scale(.92)}
+.plus-item .ico{width:38px;height:38px;border-radius:12px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff;box-shadow:0 4px 10px rgba(139,92,246,.35)}
+.emoji-panel{display:none;height:220px;overflow:hidden;background:var(--card-bg);backdrop-filter:blur(30px);border-radius:18px;padding:8px;margin-bottom:8px;flex-direction:column}
+.emoji-panel.show{display:flex}
+.emoji-panel .ep-tabs{display:flex;gap:4px;margin-bottom:6px;overflow-x:auto;flex-shrink:0}
+.emoji-panel .ep-tab{padding:4px 10px;border-radius:10px;background:rgba(255,255,255,.06);border:none;color:var(--text);font-size:11px;cursor:pointer;flex-shrink:0;font-family:inherit}
+.emoji-panel .ep-tab.on{background:var(--primary);color:#fff}
+.emoji-panel .ep-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:2px;overflow-y:auto;flex:1}
+.emoji-panel .ep-grid span{font-size:20px;text-align:center;cursor:pointer;padding:4px 0;border-radius:6px;transition:background .15s;line-height:1}
+.emoji-panel .ep-grid span:active{background:rgba(139,92,246,.3)}
 #chat-input::placeholder{color:rgba(0,0,0,.28)}
 .tip{font-size:12px;opacity:.55;margin-bottom:5px;height:18px}
 
@@ -229,6 +248,8 @@ body{
  .msg{max-width:86%}
  .tab-bar{display:none}
  .top-bar{height:50px}
+ .main-area{padding-bottom:calc(60px + env(safe-area-inset-bottom))}
+ .input-row{border-radius:0;margin-bottom:0}
 }
 @media(max-width:480px){
  .msg{max-width:90%}
@@ -236,7 +257,7 @@ body{
 }
 ::-webkit-scrollbar{width:0;height:0}
 @supports(padding-bottom:env(safe-area-inset-bottom)){
- .input-row{padding-bottom:env(safe-area-inset-bottom)}
+ .input-row{padding-bottom:calc(8px + env(safe-area-inset-bottom))}
 }
 </style>
 </head>
@@ -301,14 +322,29 @@ body{
  <button class="btn" onclick="quickReply('哈哈😂')">哈哈😂</button>
  <button class="btn" onclick="quickReply('👍👍')">👍👍</button>
  </div>
- <div class="input-row card">
- <button class="btn tool-btn" onclick="openEmoji()">😊</button>
- <button class="btn tool-btn" onclick="uploadImg()">🖼️</button>
- <button class="btn tool-btn" onclick="uploadFile()">📁</button>
- <button class="btn tool-btn" onclick="openVideoCall()">📹</button>
- <button class="btn tool-btn" onclick="openQuickCmd()">⚡</button>
- <textarea id="chat-input" rows="1" placeholder="说点什么..." onkeydown="handleKey(event)" oninput="autoGrow(this);onTyping()"></textarea>
- <button class="btn tool-btn primary" onclick="send()" id="sendBtn">➤</button>
+ <!-- 微信风格输入区：语音 / 输入框 / emoji / + -->
+ <div class="input-row">
+ <button class="tool-btn" onclick="toggleVoiceMode()" id="voiceBtn">🎙️</button>
+ <textarea id="chat-input" rows="1" placeholder="说点什么..." onkeydown="handleKey(event)" oninput="autoGrow(this);onTyping();toggleSendBtn()"></textarea>
+ <button class="tool-btn" onclick="toggleEmojiPanel()" id="emojiBtn">😊</button>
+ <button class="tool-btn" onclick="togglePlusPanel()" id="plusBtn">+</button>
+ <button class="tool-btn primary" onclick="send()" id="sendBtn" style="display:none">➤</button>
+ </div>
+ <!-- emoji 面板 -->
+ <div class="emoji-panel" id="emojiPanel">
+ <div class="ep-tabs" id="epTabs"></div>
+ <div class="ep-grid" id="epGrid"></div>
+ </div>
+ <!-- + 功能面板（微信式网格） -->
+ <div class="plus-panel" id="plusPanel">
+ <button class="plus-item" onclick="uploadImg()"><span class="ico">🖼️</span><span>照片</span></button>
+ <button class="plus-item" onclick="captureImg()"><span class="ico">📷</span><span>拍摄</span></button>
+ <button class="plus-item" onclick="uploadFile()"><span class="ico">📁</span><span>文件</span></button>
+ <button class="plus-item" onclick="openVideoCall()"><span class="ico">📹</span><span>视频通话</span></button>
+ <button class="plus-item" onclick="shareLocation()"><span class="ico">📍</span><span>位置</span></button>
+ <button class="plus-item" onclick="openQuickCmd()"><span class="ico">⚡</span><span>指令</span></button>
+ <button class="plus-item" onclick="exportData()"><span class="ico">💾</span><span>导出</span></button>
+ <button class="plus-item" onclick="importData()"><span class="ico">📥</span><span>导入</span></button>
  </div>
  </div>
 
@@ -864,9 +900,105 @@ function initEmoji(){
  box.innerHTML+=`<div class="emoji-cat"><div class="emoji-cat-title">${cat}</div><div>${list.map(e=>`<span style="font-size:24px;cursor:pointer;padding:2px" onclick="pickEmoji('${e}')">${e}</span>`).join("")}</div></div>`;
  });
 }
-function openEmoji(){$("emojiModal").classList.add("show");}
-function closeEmoji(){$("emojiModal").classList.remove("show");}
-function pickEmoji(e){ $("chat-input").value+=e; $("chat-input").focus(); closeEmoji(); }
+// ===== 微信式面板控制 =====
+let emojiOpen = false, plusOpen = false, voiceMode = false;
+function toggleSendBtn(){
+ const has = $("chat-input").value.trim().length>0;
+ $("sendBtn").style.display = has ? "inline-flex" : "none";
+ $("plusBtn").style.display = has ? "none" : "inline-flex";
+}
+function closeAllPanels(){
+ emojiOpen = plusOpen = false;
+ $("emojiPanel").classList.remove("show");
+ $("plusPanel").classList.remove("show");
+}
+function toggleEmojiPanel(){
+ closeAllPanels();
+ emojiOpen = !emojiOpen;
+ $("emojiPanel").classList.toggle("show", emojiOpen);
+ if(emojiOpen){ renderEmojiPanel(); $("chat-input").blur(); }
+}
+function togglePlusPanel(){
+ closeAllPanels();
+ plusOpen = !plusOpen;
+ $("plusPanel").classList.toggle("show", plusOpen);
+ if(plusOpen){ $("chat-input").blur(); }
+}
+function toggleVoiceMode(){
+ voiceMode = !voiceMode;
+ $("voiceBtn").textContent = voiceMode ? "⌨️" : "🎙️";
+ $("chat-input").style.display = voiceMode ? "none" : "block";
+ if(voiceMode) closeAllPanels();
+}
+function renderEmojiPanel(){
+ const tabs = $("epTabs"), grid = $("epGrid");
+ if(!tabs || !grid || typeof EMOJIS==="undefined") return;
+ const cats = Object.keys(EMOJIS);
+ if(!tabs.children.length){
+ tabs.innerHTML = cats.map((c,i)=>'<button class="ep-tab'+(i===0?' on':'')+'" data-i="'+i+'">'+c+'</button>').join('');
+ tabs.querySelectorAll(".ep-tab").forEach(t=>{
+ t.onclick = ()=>{
+ tabs.querySelectorAll(".ep-tab").forEach(x=>x.classList.remove("on"));
+ t.classList.add("on");
+ showCat(+t.dataset.i);
+ };
+ });
+}
+function showCat(i){
+ const cats = Object.keys(EMOJIS);
+ const list = EMOJIS[cats[i]] || [];
+ $("epGrid").innerHTML = list.map(e=>'<span onclick="pickEmoji(\''+e+'\')">'+e+'</span>').join("");
+}
+ showCat(0);
+}
+function captureImg(){
+ const inp = document.createElement("input");
+ inp.type = "file"; inp.accept = "image/*"; inp.capture = "environment";
+ inp.onchange = e=>{
+ const f = e.target.files[0]; if(!f) return;
+ const r = new FileReader();
+ r.onload = ev=> sendImage(ev.target.result, f.name);
+ r.readAsDataURL(f);
+ };
+ inp.click();
+ closeAllPanels();
+}
+function shareLocation(){
+ if(!navigator.geolocation){ alert("浏览器不支持定位"); return; }
+ navigator.geolocation.getCurrentPosition(p=>{
+ const lat = p.coords.latitude.toFixed(5), lng = p.coords.longitude.toFixed(5);
+ const msg = "📍 位置: "+lat+", "+lng+"\nhttps://maps.google.com/?q="+lat+","+lng;
+ $("chat-input").value = msg;
+ closeAllPanels();
+ $("chat-input").focus();
+ }, err=>{ alert("定位失败: "+err.message); });
+}
+function importData(){
+ const inp = document.createElement("input");
+ inp.type = "file"; inp.accept = "application/json";
+ inp.onchange = e=>{
+ const f = e.target.files[0]; if(!f) return;
+ const r = new FileReader();
+ r.onload = ev=>{
+ try{
+ const d = JSON.parse(ev.target.result);
+ if(d.chatHist) chatHist = d.chatHist;
+ if(d.contacts) contacts = d.contacts;
+ if(d.scheds) scheds = d.scheds;
+ if(d.notices) notices = d.notices;
+ if(d.anns) anns = d.anns;
+ saveAll(); renderAll();
+ alert("✅ 数据导入成功");
+ }catch(err){ alert("❌ 文件格式错误: "+err.message); }
+ };
+ r.readAsText(f);
+ };
+ inp.click();
+ closeAllPanels();
+}
+function openEmoji(){toggleEmojiPanel();}
+function closeEmoji(){closeAllPanels();}
+function pickEmoji(e){ $("chat-input").value+=e; toggleSendBtn(); }
 
 function openQuickCmd(){
  const list=$("cmdList");
@@ -963,7 +1095,7 @@ function exportData(){
  const a=document.createElement("a"); a.href=URL.createObjectURL(b);
  a.download=`聊天备份_${new Date().toLocaleDateString().replace(/\//g,"-")}.json`; a.click(); URL.revokeObjectURL(a.href);
 }
-function importData(){$("import-file").click();}
+
 function onImport(e){
  const f=e.target.files[0]; if(!f)return;
  const r=new FileReader();
