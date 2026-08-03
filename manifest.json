@@ -1,14 +1,19 @@
 {
   "name": "iOS17 沉浸式聊天室",
   "short_name": "聊天室",
-  "description": "多人实时 WebSocket 聊天室，支持图片/表情/视频通话，PWA 可安装至桌面",
-  "start_url": "/chatroom-v3-enhanced.html",
+  "description": "多人实时 WebSocket 聊天室，支持群聊/私聊/图片/表情/视频通话，PWA 可安装至桌面",
+  "start_url": "./",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait-primary",
   "background_color": "#2c2444",
   "theme_color": "#8b5cf6",
   "lang": "zh-CN",
-  "categories": ["social", "communication", "productivity"],
+  "categories": [
+    "social",
+    "communication",
+    "productivity"
+  ],
   "icons": [
     {
       "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%238b5cf6'/><text x='96' y='128' font-size='110' text-anchor='middle' fill='white'>💬</text></svg>",
@@ -23,19 +28,27 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
   "share_target": {
-    "action": "./chatroom-v3-enhanced.html",
+    "action": "./",
     "method": "GET",
-    "params": { "title": "title", "text": "text", "url": "url" }
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
   },
   "shortcuts": [
     {
       "name": "💬 进入聊天",
       "short_name": "聊天",
       "description": "打开聊天室",
-      "url": "./chatroom-v3-enhanced.html",
-      "icons": [{ "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' rx='20' fill='%238b5cf6'/><text x='48' y='68' font-size='50' text-anchor='middle' fill='white'>💬</text></svg>", "sizes": "96x96" }]
+      "url": "./",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 96 96'><rect width='96' height='96' rx='20' fill='%238b5cf6'/><text x='48' y='68' font-size='50' text-anchor='middle' fill='white'>💬</text></svg>",
+          "sizes": "96x96"
+        }
+      ]
     }
   ]
 }
