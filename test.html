@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>CSS 娴嬭瘯</title>
+<style>
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+.card {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 30px;
+  margin: 20px 0;
+}
+.btn {
+  background: rgba(255,255,255,0.3);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h1>鉁?CSS 娴嬭瘯鎴愬姛锛?/h1>
+<div class="card">
+  <p>濡傛灉浣犵湅鍒扮传鑹叉笎鍙樿儗鏅拰姣涚幓鐠冨崱鐗囷紝璇存槑 CSS 宸ヤ綔姝ｅ父銆?/p>
+  <p>涓枃鏄剧ず锛氭祴璇曟垚鍔?鉁?/p>
+  <button class="btn">鎸夐挳娴嬭瘯</button>
+</div>
+<p>鍦?DevTools Console 鐪嬪埌鐨勫瓧鏍凤細<code>window.location.href</code></p>
+<script>
+console.log('JS 宸ヤ綔姝ｅ父');
+console.log('褰撳墠椤甸潰:', window.location.href);
+document.body.innerHTML += '<p style="font-size:12px;opacity:0.7">URL: ' + window.location.href + '</p>';
+</script>
+</body>
+</html>
