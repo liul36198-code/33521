@@ -16,13 +16,13 @@
   ],
   "icons": [
     {
-      "src": "https://liul36198-code.github.io/33521/favicon-192.svg",
+      "src": "https://liul36198-code.github.io/33521/icon-192.svg",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "https://liul36198-code.github.io/33521/favicon-512.svg",
+      "src": "https://liul36198-code.github.io/33521/icon-512.svg",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
@@ -36,8 +36,9 @@
       "url": "/33521/index.html",
       "icons": [
         {
-          "src": "https://liul36198-code.github.io/33521/favicon-96.svg",
-          "sizes": "96x96"
+          "src": "https://liul36198-code.github.io/33521/icon-96.svg",
+          "sizes": "96x96",
+          "type": "image/svg+xml"
         }
       ]
     }
